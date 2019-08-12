@@ -12,8 +12,10 @@ int x = 12;
 int y = -12;
 int orgx = 12;
 int orgy = 12;
+int bounceCount = 0;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
+char roundPoint;
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
@@ -72,24 +74,34 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
      if(Ball->Left >= PaddleRight->Left + PaddleRight->Width + 30)
      {
          BallTimer->Enabled = false;
+         IncreseSpeed->Enabled = false;
          Ball->Visible = false;
          PaddleLeft->Enabled = false;
          PaddleRight->Enabled = false;
          leftPlayerPoints++;
-         Label1->Caption = "Punkt dla gracza z lewej strony!";
+         roundPoint = '<';
+         Label1->Caption = "< Punkt dla gracza z lewej strony!";
          Label1->Visible = true;
          Button1->Visible = true;
+         Label2->Caption = "Liczba odbiæ = " + IntToStr(bounceCount);
+         Label2->Visible = true;
+
      }
      if( Ball->Left + Ball->Width + 30 <= PaddleLeft->Left)
      {
          BallTimer->Enabled = false;
+         IncreseSpeed->Enabled = false;
          Ball->Visible = false;
          PaddleLeft->Enabled = false;
          PaddleRight->Enabled = false;
          rightPlayerPoints++;
-         Label1->Caption = "Punkt dla gracza z prawej strony!";
+         roundPoint = '>';
+         Label1->Caption = "Punkt dla gracza z prawej strony! >";
          Label1->Visible = true;
          Button1->Visible = true;
+         Label2->Caption = "Liczba odbiæ = " + IntToStr(bounceCount);
+         Label2->Visible = true;
+
      }
 
      //srodek paletki lewej
@@ -98,6 +110,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
         Ball->Left  < PaddleLeft->Left)
         {
                 if(x<0) x = -1.5*x;
+                bounceCount++;
         }
         // górna strona lewej
           else if (Ball->Top + Ball->Height/2 > PaddleLeft->Top + 20 &&
@@ -109,6 +122,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                         }
                     if(y>0) y = orgy;
                  if(y<0) y = -orgy;
+                 bounceCount++;
 
         }
         //dolna strona lewej
@@ -121,6 +135,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                         }
                     if(y>0) y = orgy;
                  if(y<0) y = -orgy;
+                 bounceCount++;
 
         }
         //lewa górny kant
@@ -132,6 +147,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                              x = orgx;
                         }
                          y = -orgy * 2.5;
+                         bounceCount++;
 
         }
         //lewa dolny kant
@@ -143,8 +159,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                              x = orgx;
                         }
                         y = orgy * 2.5;
-
-
+                        bounceCount++;
         }
         //srodek paletki prawej
         if(Ball->Top + Ball->Height/2 > PaddleRight->Top + PaddleRight->Height/2 - 20 &&
@@ -152,6 +167,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
         Ball->Left + Ball->Width  > PaddleRight->Left + PaddleRight->Width)
         {
                 if(x>0) x = -1.5*x;
+                bounceCount++;
         }
            // górna strona prawej
           else if (Ball->Top + Ball->Height/2 > PaddleRight->Top + 20 &&
@@ -163,6 +179,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                         }
                  if(y>0) y = orgy;
                  if(y<0) y = -orgy;
+                 bounceCount++;
 
         }
           //dolna strona prawej
@@ -175,6 +192,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                         }
                     if(y>0) y = orgy;
                  if(y<0) y = -orgy;
+                 bounceCount++;
 
         }
            //prawa górny kant
@@ -186,6 +204,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                              x = -orgx;
                         }
                          y = -orgy * 2.5;
+                         bounceCount++;
 
         }
         //prawa dolny kant
@@ -197,8 +216,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                              x = -orgx;
                         }
                         y = orgy * 2.5;
-
-
+                        bounceCount++;
         }
 
   }
@@ -206,24 +224,35 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
 void __fastcall TForm1::Button1Click(TObject *Sender)
 {
     BallTimer->Enabled = true;
+    IncreseSpeed->Enabled = true;
     PaddleLeft->Enabled = true;
     PaddleRight->Enabled = true;
     Ball->Left = 450;
     Ball->Top = 250;
-    x = orgx;
-    y = orgy;
+    if(roundPoint == '<')
+    {
+        x = -orgx;
+        y = orgy;
+    }
+     if(roundPoint == '>')
+    {
+        x = orgx;
+        y = orgy;
+    }
     Ball->Visible = true;
     Label1->Visible = false;
+    Label2->Visible = false;
     Button1->Visible = false;
     leftPlayerPoints = 0;
     rightPlayerPoints = 0;
+    bounceCount = 0;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::IncreseSpeedTimer(TObject *Sender)
 {
-    x = x * 1,1;
-    y = y * 1,1;
+    orgx = orgx * 1,1;
+    orgy = orgy * 1,1;
 }
 //---------------------------------------------------------------------------
 
