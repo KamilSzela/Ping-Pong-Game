@@ -69,19 +69,23 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
     //odbij od dolnej krawêdzi
     if(Ball->Top + Ball->Height + 5 >= Background->Height) y=-y;
      // skucha
-     if(Ball->Left >= PaddleRight->Left + PaddleRight->Width)
+     if(Ball->Left >= PaddleRight->Left + PaddleRight->Width + 30)
      {
          BallTimer->Enabled = false;
          Ball->Visible = false;
+         PaddleLeft->Enabled = false;
+         PaddleRight->Enabled = false;
          leftPlayerPoints++;
          Label1->Caption = "Punkt dla gracza z lewej strony!";
          Label1->Visible = true;
          Button1->Visible = true;
      }
-     if( Ball->Left + Ball->Width <= PaddleLeft->Left)
+     if( Ball->Left + Ball->Width + 30 <= PaddleLeft->Left)
      {
          BallTimer->Enabled = false;
          Ball->Visible = false;
+         PaddleLeft->Enabled = false;
+         PaddleRight->Enabled = false;
          rightPlayerPoints++;
          Label1->Caption = "Punkt dla gracza z prawej strony!";
          Label1->Visible = true;
@@ -93,10 +97,10 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
         Ball->Top + Ball->Height/2  < PaddleLeft->Top + PaddleLeft->Height/2 + 20 &&
         Ball->Left  < PaddleLeft->Left)
         {
-                if(x<0) x = -2*x;
+                if(x<0) x = -1.5*x;
         }
         // górna strona lewej
-          else if (Ball->Top + Ball->Height/2 > PaddleLeft->Top +20&&
+          else if (Ball->Top + Ball->Height/2 > PaddleLeft->Top + 20 &&
         Ball->Top + Ball->Height/2  < (PaddleLeft->Top + PaddleLeft->Height/2) - 20  &&
         Ball->Left < PaddleLeft->Left)
         {
@@ -120,27 +124,26 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
 
         }
         //lewa górny kant
-           else if (Ball->Top + Ball->Height/2 -10 > PaddleLeft->Top &&
+           else if (Ball->Top + Ball->Height/2 - 10 > PaddleLeft->Top &&
         Ball->Top + Ball->Height/2  < PaddleLeft->Top + 20  &&
         Ball->Left < PaddleLeft->Left)
         {
                 if(x<0) {
                              x = orgx;
                         }
-                        if(y>0) y = orgy * 3;
-                        if(y<0) y = -orgy * 3;
+                         y = -orgy * 2.5;
 
         }
         //lewa dolny kant
-           else if (Ball->Top + Ball->Height/2 -10 > PaddleLeft->Top &&
-        Ball->Top + Ball->Height/2  < PaddleLeft->Top + 20  &&
+           else if (Ball->Top + Ball->Height/2 + 10 < PaddleLeft->Top + PaddleLeft->Height &&
+        Ball->Top + Ball->Height/2  > PaddleLeft->Top + PaddleLeft->Height - 20 &&
         Ball->Left < PaddleLeft->Left)
         {
                 if(x<0) {
                              x = orgx;
                         }
-                        if(y>0) y = orgy * 3;
-                        if(y<0) y = -orgy * 3;
+                        y = orgy * 2.5;
+
 
         }
         //srodek paletki prawej
@@ -148,10 +151,10 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
         Ball->Top + Ball->Height/2  < PaddleRight->Top + PaddleRight->Height/2 + 20 &&
         Ball->Left + Ball->Width  > PaddleRight->Left + PaddleRight->Width)
         {
-                if(x>0) x = -2*x;
+                if(x>0) x = -1.5*x;
         }
            // górna strona prawej
-          else if (Ball->Top + Ball->Height/2 > PaddleRight->Top &&
+          else if (Ball->Top + Ball->Height/2 > PaddleRight->Top + 20 &&
         Ball->Top + Ball->Height/2  < (PaddleRight->Top + PaddleRight->Height/2) - 20  &&
         Ball->Left + Ball->Width  > PaddleRight->Left + PaddleRight->Width)
         {
@@ -163,7 +166,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
 
         }
           //dolna strona prawej
-          else if (Ball->Top + Ball->Height/2 < PaddleRight->Top + PaddleRight->Height &&
+          else if (Ball->Top + Ball->Height/2 < PaddleRight->Top + PaddleRight->Height - 20 &&
         Ball->Top + Ball->Height/2  > (PaddleRight->Top + PaddleRight->Height/2) + 20  &&
         Ball->Left + Ball->Width  > PaddleRight->Left + PaddleRight->Width)
         {
@@ -174,21 +177,53 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                  if(y<0) y = -orgy;
 
         }
+           //prawa górny kant
+           else if (Ball->Top + Ball->Height/2 - 10 > PaddleRight->Top &&
+        Ball->Top + Ball->Height/2  < PaddleRight->Top + 20  &&
+        Ball->Left + Ball->Width  > PaddleRight->Left + PaddleRight->Width)
+        {
+                if(x>0) {
+                             x = -orgx;
+                        }
+                         y = -orgy * 2.5;
+
+        }
+        //prawa dolny kant
+           else if (Ball->Top + Ball->Height/2 + 10 < PaddleRight->Top + PaddleRight->Height &&
+        Ball->Top + Ball->Height/2  > PaddleRight->Top + PaddleRight->Height - 20 &&
+        Ball->Left + Ball->Width  > PaddleRight->Left + PaddleRight->Width)
+        {
+                if(x>0) {
+                             x = -orgx;
+                        }
+                        y = orgy * 2.5;
+
+
+        }
 
   }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button1Click(TObject *Sender)
 {
     BallTimer->Enabled = true;
+    PaddleLeft->Enabled = true;
+    PaddleRight->Enabled = true;
     Ball->Left = 450;
     Ball->Top = 250;
-    x = -orgx;
+    x = orgx;
     y = orgy;
     Ball->Visible = true;
     Label1->Visible = false;
     Button1->Visible = false;
     leftPlayerPoints = 0;
     rightPlayerPoints = 0;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::IncreseSpeedTimer(TObject *Sender)
+{
+    x = x * 1,1;
+    y = y * 1,1;
 }
 //---------------------------------------------------------------------------
 
