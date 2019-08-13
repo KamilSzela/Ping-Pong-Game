@@ -317,7 +317,7 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
       AnsiString ThirdLine = "Prawy gracz steruje za pomoca klawiszy strza³ek góra i dó³.";
       AnsiString FourthLine = "Dla urozmaicenia gry: odbicie œrodkiem paletki spowoduje ¿e pi³ka przyœpieszy i zmieni k¹t.";
       AnsiString FifthLine = "Odbicie pi³ki kantem paletki znacznie zmieni k¹t odbicia.";
-      AnsiString FifthALine = "Obcicie pi³ki dwukrotnie œrodkiem paletki umo¿liwia otrzymanie wzmocnienia - ";
+      AnsiString FifthALine = "Obcicie pi³ki trzykrotnie œrodkiem paletki umo¿liwia otrzymanie wzmocnienia - ";
       AnsiString FifthBbLine = "- przez 5 sekund pi³ka odbije siê od twojej krawêdzi zamiast policzyc punkt przeciwnikowi";
       AnsiString FifthCbLine = "Aktywacja wzmocnienia dla lewego gracza: 'W', dla prawego: strza³ka prawo";
       AnsiString SixthLine = "Pi³ka przyœpiesza z czasem.";
