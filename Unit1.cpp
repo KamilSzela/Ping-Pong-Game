@@ -82,9 +82,14 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
          roundPoint = '<';
          Label1->Caption = "< Punkt dla gracza z lewej strony!";
          Label1->Visible = true;
+         Button1->Enabled = true;
          Button1->Visible = true;
+         NewRoundButton->Enabled = true;
+         NewRoundButton->Visible = true;
          Label2->Caption = "Liczba odbiæ = " + IntToStr(bounceCount);
          Label2->Visible = true;
+         Label3->Caption = "Liczba punktów = " + IntToStr(leftPlayerPoints) + ":" + IntToStr(rightPlayerPoints);
+         Label3->Visible = true;
 
      }
      if( Ball->Left + Ball->Width + 30 <= PaddleLeft->Left)
@@ -98,9 +103,14 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
          roundPoint = '>';
          Label1->Caption = "Punkt dla gracza z prawej strony! >";
          Label1->Visible = true;
+         Button1->Enabled = true;
          Button1->Visible = true;
+         NewRoundButton->Enabled = true;
+         NewRoundButton->Visible = true;
          Label2->Caption = "Liczba odbiæ = " + IntToStr(bounceCount);
          Label2->Visible = true;
+         Label3->Caption = "Liczba punktów = " + IntToStr(leftPlayerPoints) + ":" + IntToStr(rightPlayerPoints);
+         Label3->Visible = true;
 
      }
 
@@ -120,7 +130,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                 if(x<0) {
                                 x = orgx;
                         }
-                    if(y>0) y = orgy;
+                 if(y>0) y = orgy;
                  if(y<0) y = -orgy;
                  bounceCount++;
 
@@ -134,8 +144,8 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                                 x = orgx;
                         }
                     if(y>0) y = orgy;
-                 if(y<0) y = -orgy;
-                 bounceCount++;
+                    if(y<0) y = -orgy;
+                     bounceCount++;
 
         }
         //lewa górny kant
@@ -242,7 +252,11 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
     Ball->Visible = true;
     Label1->Visible = false;
     Label2->Visible = false;
+    Label3->Visible = false;
     Button1->Visible = false;
+    Button1->Enabled = false;
+    NewRoundButton->Enabled = false;
+    NewRoundButton->Visible = false;
     leftPlayerPoints = 0;
     rightPlayerPoints = 0;
     bounceCount = 0;
@@ -251,8 +265,55 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 
 void __fastcall TForm1::IncreseSpeedTimer(TObject *Sender)
 {
-    orgx = orgx * 1,1;
-    orgy = orgy * 1,1;
+    orgx = orgx * 1.05;
+    orgy = orgy * 1.05;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+      AnsiString FirstLine = "Witaj w grze Ping Pong!";
+      AnsiString SecondLine = "Lewy gracz steruje paletk¹ za pomoc¹ klawiszy 'a' i 'z'.";
+      AnsiString ThirdLine = "Prawy gracz steruje za pomoca klawiszy strza³ek góra i dó³.";
+      AnsiString FourthLine = "Dla urozmaicenia gry: odbicie œrodkiem paletki spowoduje ¿e pi³ka przyœpieszy i zmieni k¹t.";
+      AnsiString FifthLine = "Odbicie pi³ki kantem paletki znacznie zmieni k¹t odbicia.";
+      AnsiString SixthLine = "Pi³ka przyœpiesza z czasem.";
+      AnsiString SeventhLine = "Mi³ej zabawy!";
+
+
+	ShowMessage(FirstLine + sLineBreak + SecondLine + sLineBreak +
+			ThirdLine + sLineBreak + FourthLine + sLineBreak +
+                        FifthLine + sLineBreak + SixthLine + sLineBreak + SeventhLine);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::NewRoundButtonClick(TObject *Sender)
+{
+    BallTimer->Enabled = true;
+    IncreseSpeed->Enabled = true;
+    PaddleLeft->Enabled = true;
+    PaddleRight->Enabled = true;
+    Ball->Left = 450;
+    Ball->Top = 250;
+    if(roundPoint == '<')
+    {
+        x = -orgx;
+        y = orgy;
+    }
+     if(roundPoint == '>')
+    {
+        x = orgx;
+        y = orgy;
+    }
+    Ball->Visible = true;
+    Label1->Visible = false;
+    Label2->Visible = false;
+    Label3->Visible = false;
+    Button1->Visible = false;
+    Button1->Enabled = false;
+    NewRoundButton->Enabled = false;
+    NewRoundButton->Visible = false;
+    bounceCount = 0;
 }
 //---------------------------------------------------------------------------
 
