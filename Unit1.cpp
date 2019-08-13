@@ -15,6 +15,10 @@ int orgy = 12;
 int bounceCount = 0;
 int leftPlayerPoints = 0;
 int rightPlayerPoints = 0;
+int leftBuff = 0;
+int rightBuff = 0;
+int toEndRightBuff = 5;
+int toEndBuff = 5;
 char roundPoint;
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
@@ -30,6 +34,16 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
    if(Key == 'Z') LeftDown->Enabled = true;
    if(Key == VK_UP) RightUp->Enabled = true;
    if(Key == VK_DOWN) RightDown->Enabled = true;
+   if(Key == 'W' && leftBuff >=3)
+   {
+      LeftBuffTimer->Enabled = true;
+      toEndBuff = 5;
+   }
+  if(Key == VK_RIGHT && rightBuff >=3)
+   {
+      BuffRightTimer->Enabled = true;
+      toEndBuff = 5;
+   }
 }
 //---------------------------------------------------------------------------
 
@@ -70,7 +84,24 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
     if(Ball->Top - 5 <= Background->Top) y = -y;
     //odbij od dolnej krawêdzi
     if(Ball->Top + Ball->Height + 5 >= Background->Height) y=-y;
-     // skucha
+     // Buff
+    if(LeftBuffTimer->Enabled == true)
+    {
+      //odbij od lewej krawedzi
+      if(Ball->Left < Background->Left)
+      {
+         if(x<0) x=-x;
+      }
+    }
+     if(BuffRightTimer->Enabled == true)
+    {
+      //odbij od prawej krawedzi
+      if(Ball->Left + Ball->Width > Background->Left + Background->Width)
+      {
+         if(x>0) x=-x;
+      }
+    }
+    // skucha
      if(Ball->Left >= PaddleRight->Left + PaddleRight->Width + 30)
      {
          BallTimer->Enabled = false;
@@ -121,6 +152,8 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
         {
                 if(x<0) x = -1.5*x;
                 bounceCount++;
+                leftBuff++;
+                BuffLeft->Caption = "Buff points: " + IntToStr(leftBuff);
         }
         // górna strona lewej
           else if (Ball->Top + Ball->Height/2 > PaddleLeft->Top + 20 &&
@@ -170,6 +203,7 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
                         }
                         y = orgy * 2.5;
                         bounceCount++;
+
         }
         //srodek paletki prawej
         if(Ball->Top + Ball->Height/2 > PaddleRight->Top + PaddleRight->Height/2 - 20 &&
@@ -178,6 +212,8 @@ void __fastcall TForm1::BallTimerTimer(TObject *Sender)
         {
                 if(x>0) x = -1.5*x;
                 bounceCount++;
+                rightBuff++;
+                BuffRight->Caption = "Buff points: " + IntToStr(rightBuff);
         }
            // górna strona prawej
           else if (Ball->Top + Ball->Height/2 > PaddleRight->Top + 20 &&
@@ -260,6 +296,10 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
     leftPlayerPoints = 0;
     rightPlayerPoints = 0;
     bounceCount = 0;
+    BuffLeft->Caption = "Buff points: 0";
+    BuffRight->Caption = "Buff points: 0";
+    leftBuff = 0;
+    rightBuff = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -277,13 +317,18 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
       AnsiString ThirdLine = "Prawy gracz steruje za pomoca klawiszy strza³ek góra i dó³.";
       AnsiString FourthLine = "Dla urozmaicenia gry: odbicie œrodkiem paletki spowoduje ¿e pi³ka przyœpieszy i zmieni k¹t.";
       AnsiString FifthLine = "Odbicie pi³ki kantem paletki znacznie zmieni k¹t odbicia.";
+      AnsiString FifthALine = "Obcicie pi³ki trzykrotnie œrodkiem paletki umo¿liwia otrzymanie wzmocnienia - ";
+      AnsiString FifthBbLine = "- przez 5 sekund pi³ka odbije siê od twojej krawêdzi zamiast policzyc punkt przeciwnikowi";
+      AnsiString FifthCbLine = "Aktywacja wzmocnienia dla lewego gracza: 'W', dla prawego: strza³ka prawo";
       AnsiString SixthLine = "Pi³ka przyœpiesza z czasem.";
       AnsiString SeventhLine = "Mi³ej zabawy!";
 
 
 	ShowMessage(FirstLine + sLineBreak + SecondLine + sLineBreak +
 			ThirdLine + sLineBreak + FourthLine + sLineBreak +
-                        FifthLine + sLineBreak + SixthLine + sLineBreak + SeventhLine);
+                        FifthLine +sLineBreak + FifthALine + sLineBreak + FifthBbLine +
+                        sLineBreak + FifthCbLine + sLineBreak +
+                        SixthLine + sLineBreak + SeventhLine);
 }
 //---------------------------------------------------------------------------
 
@@ -313,7 +358,38 @@ void __fastcall TForm1::NewRoundButtonClick(TObject *Sender)
     Button1->Enabled = false;
     NewRoundButton->Enabled = false;
     NewRoundButton->Visible = false;
+    BuffLeft->Caption = "Buff points: 0";
+    BuffRight->Caption = "Buff points: 0";
+    leftBuff = 0;
+    rightBuff = 0;
     bounceCount = 0;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::LeftBuffTimerTimer(TObject *Sender)
+{
+  toEndBuff--;
+  BuffLeft->Caption = "Buff ON";
+  if(toEndBuff <= 0)
+  {
+    LeftBuffTimer->Enabled = false;
+    leftBuff = 0;
+    BuffLeft->Caption = "Buff points: 0";
+  }
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::BuffRightTimerTimer(TObject *Sender)
+{
+    toEndRightBuff--;
+  BuffRight->Caption = "Buff ON";
+  if(toEndRightBuff <= 0)
+  {
+    BuffRightTimer->Enabled = false;
+    rightBuff = 0;
+    BuffRight->Caption = "Buff points: 0";
+  }
 }
 //---------------------------------------------------------------------------
 
