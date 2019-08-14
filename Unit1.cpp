@@ -38,11 +38,13 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
    {
       LeftBuffTimer->Enabled = true;
       toEndBuff = 5;
+      BuffLeft->Caption = "Buff ON";
    }
   if(Key == VK_RIGHT && rightBuff >=3)
    {
       BuffRightTimer->Enabled = true;
-      toEndBuff = 5;
+      toEndRightBuff = 5;
+      BuffRight->Caption = "Buff ON";
    }
 }
 //---------------------------------------------------------------------------
