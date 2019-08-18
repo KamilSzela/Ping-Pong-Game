@@ -38,13 +38,11 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
    {
       LeftBuffTimer->Enabled = true;
       toEndBuff = 5;
-      BuffLeft->Caption = "Buff ON";
    }
   if(Key == VK_RIGHT && rightBuff >=3)
    {
       BuffRightTimer->Enabled = true;
       toEndRightBuff = 5;
-      BuffRight->Caption = "Buff ON";
    }
 }
 //---------------------------------------------------------------------------
@@ -275,8 +273,10 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
     IncreseSpeed->Enabled = true;
     PaddleLeft->Enabled = true;
     PaddleRight->Enabled = true;
-    Ball->Left = 450;
+    Ball->Left = 550;
     Ball->Top = 250;
+    orgx = 12;
+    orgy = 12;
     if(roundPoint == '<')
     {
         x = -orgx;
@@ -307,8 +307,8 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 
 void __fastcall TForm1::IncreseSpeedTimer(TObject *Sender)
 {
-    orgx = orgx * 1.05;
-    orgy = orgy * 1.05;
+    orgx = orgx * 1.1;
+    orgy = orgy * 1.1;
 }
 //---------------------------------------------------------------------------
 
@@ -340,8 +340,10 @@ void __fastcall TForm1::NewRoundButtonClick(TObject *Sender)
     IncreseSpeed->Enabled = true;
     PaddleLeft->Enabled = true;
     PaddleRight->Enabled = true;
-    Ball->Left = 450;
+    Ball->Left = 550;
     Ball->Top = 250;
+    orgx = 12;
+    orgy = 12;
     if(roundPoint == '<')
     {
         x = -orgx;
